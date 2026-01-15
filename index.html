@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>Chess Game</h1>
+            <div class="game-info">
+                <div class="player-info">
+                    <div class="player white-player">
+                        <span class="player-name">White</span>
+                        <span class="player-time" id="white-time">--:--</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="player black-player">
+                        <span class="player-name">Black</span>
+                        <span class="player-time" id="black-time">--:--</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-controls">
+                <button id="new-game-btn" class="btn">New Game</button>
+                <button id="undo-btn" class="btn">Undo</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+        </div>
+
+        <div class="game-board-container">
+            <div class="board-wrapper">
+                <div class="coordinates coordinates-top">
+                    <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+                </div>
+                <div class="board" id="chess-board"></div>
+                <div class="coordinates coordinates-bottom">
+                    <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+                </div>
+            </div>
+            <div class="side-panel">
+                <div class="move-history">
+                    <h3>Move History</h3>
+                    <div class="history-content" id="move-history">
+                        <div class="history-header">
+                            <span>#</span>
+                            <span>White</span>
+                            <span>Black</span>
+                        </div>
+                        <div class="history-list" id="history-list"></div>
+                    </div>
+                </div>
+                <div class="game-status">
+                    <h3>Game Status</h3>
+                    <div id="game-status" class="status-text">White to move</div>
+                    <div id="captured-pieces" class="captured-pieces">
+                        <div class="captured-white">
+                            <h4>Captured White</h4>
+                            <div id="captured-white-pieces"></div>
+                        </div>
+                        <div class="captured-black">
+                            <h4>Captured Black</h4>
+                            <div id="captured-black-pieces"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="promotion-modal" class="modal">
+            <div class="modal-content">
+                <h3>Choose a piece to promote to:</h3>
+                <div class="promotion-pieces">
+                    <div class="promotion-piece" data-piece="queen">♕</div>
+                    <div class="promotion-piece" data-piece="rook">♖</div>
+                    <div class="promotion-piece" data-piece="bishop">♗</div>
+                    <div class="promotion-piece" data-piece="knight">♘</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="chess.js"></script>
+</body>
+</html>
+
