@@ -3,86 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Game</title>
+    <title>Chess</title>
+    <meta name="description" content="A minimalistic chess game — play locally or with a friend online.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="game-header">
-            <h1>Chess Game</h1>
-            <div class="game-info">
+
+    <!-- ===== MODE SELECTION SCREEN ===== -->
+    <div id="mode-screen" class="screen active">
+        <div class="menu-card">
+            <div class="logo">
+                <span class="logo-piece">♞</span>
+                <h1>Chess</h1>
+            </div>
+            <p class="subtitle">How would you like to play?</p>
+            <div class="mode-buttons">
+                <button id="btn-local" class="mode-btn">
+                    <span class="mode-icon">⊞</span>
+                    <span class="mode-label">Pass &amp; Play</span>
+                    <span class="mode-desc">Two players, one device</span>
+                </button>
+                <button id="btn-online" class="mode-btn">
+                    <span class="mode-icon">◎</span>
+                    <span class="mode-label">Play Online</span>
+                    <span class="mode-desc">Connect with a friend</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ONLINE LOBBY SCREEN ===== -->
+    <div id="lobby-screen" class="screen">
+        <div class="menu-card">
+            <button id="back-btn" class="back-btn">← Back</button>
+            <div class="logo">
+                <span class="logo-piece">♞</span>
+                <h1>Play Online</h1>
+            </div>
+
+            <div class="lobby-section" id="create-section">
+                <button id="btn-create-room" class="action-btn primary">Create Room</button>
+                <div id="room-code-display" class="room-code-display hidden">
+                    <p class="room-label">Share this code with your friend:</p>
+                    <div class="room-code" id="room-code-value">------</div>
+                    <p class="room-waiting">Waiting for opponent to join…</p>
+                </div>
+            </div>
+
+            <div class="lobby-divider"><span>or</span></div>
+
+            <div class="lobby-section" id="join-section">
+                <div class="input-group">
+                    <input type="text" id="room-code-input" class="room-input" placeholder="Enter room code" maxlength="6" autocomplete="off" spellcheck="false">
+                    <button id="btn-join-room" class="action-btn">Join</button>
+                </div>
+                <p id="join-error" class="error-text hidden"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GAME SCREEN ===== -->
+    <div id="game-screen" class="screen">
+        <div class="game-container">
+
+            <!-- Top player bar -->
+            <div class="player-bar" id="player-top">
                 <div class="player-info">
-                    <div class="player white-player">
-                        <span class="player-name">White</span>
-                        <span class="player-time" id="white-time">--:--</span>
-                    </div>
-                    <div class="vs">VS</div>
-                    <div class="player black-player">
-                        <span class="player-name">Black</span>
-                        <span class="player-time" id="black-time">--:--</span>
-                    </div>
+                    <div class="player-avatar" id="top-avatar">♟</div>
+                    <span class="player-name" id="top-name">Black</span>
                 </div>
+                <div class="player-timer" id="top-timer">10:00</div>
             </div>
-            <div class="game-controls">
-                <button id="new-game-btn" class="btn">New Game</button>
-                <button id="undo-btn" class="btn">Undo</button>
-                <button id="reset-btn" class="btn">Reset</button>
+
+            <!-- Board -->
+            <div class="board-section">
+                <div class="rank-labels" id="rank-labels-left"></div>
+                <div class="board-wrapper">
+                    <div class="board" id="chess-board"></div>
+                </div>
+                <div class="rank-labels rank-labels-right" id="rank-labels-right"></div>
+            </div>
+            <div class="file-labels" id="file-labels"></div>
+
+            <!-- Bottom player bar -->
+            <div class="player-bar" id="player-bottom">
+                <div class="player-info">
+                    <div class="player-avatar" id="bottom-avatar">♙</div>
+                    <span class="player-name" id="bottom-name">White</span>
+                </div>
+                <div class="player-timer" id="bottom-timer">10:00</div>
+            </div>
+
+            <!-- Controls -->
+            <div class="game-toolbar">
+                <button id="btn-switch-mode" class="toolbar-btn" title="Change Mode">⊞</button>
+                <button id="btn-undo" class="toolbar-btn" title="Undo Move">↩</button>
+                <button id="btn-resign" class="toolbar-btn" title="Resign">⚑</button>
+                <button id="btn-new-game" class="toolbar-btn primary-toolbar-btn" title="New Game">New Game</button>
             </div>
         </div>
 
-        <div class="game-board-container">
-            <div class="board-wrapper">
-                <div class="coordinates coordinates-top">
-                    <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
-                </div>
-                <div class="board" id="chess-board"></div>
-                <div class="coordinates coordinates-bottom">
-                    <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
-                </div>
+        <!-- Side panel -->
+        <div class="side-panel">
+            <div class="side-section">
+                <div class="status-badge" id="game-status">White to move</div>
             </div>
-            <div class="side-panel">
-                <div class="move-history">
-                    <h3>Move History</h3>
-                    <div class="history-content" id="move-history">
-                        <div class="history-header">
-                            <span>#</span>
-                            <span>White</span>
-                            <span>Black</span>
-                        </div>
-                        <div class="history-list" id="history-list"></div>
-                    </div>
-                </div>
-                <div class="game-status">
-                    <h3>Game Status</h3>
-                    <div id="game-status" class="status-text">White to move</div>
-                    <div id="captured-pieces" class="captured-pieces">
-                        <div class="captured-white">
-                            <h4>Captured White</h4>
-                            <div id="captured-white-pieces"></div>
-                        </div>
-                        <div class="captured-black">
-                            <h4>Captured Black</h4>
-                            <div id="captured-black-pieces"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div id="promotion-modal" class="modal">
-            <div class="modal-content">
-                <h3>Choose a piece to promote to:</h3>
-                <div class="promotion-pieces">
-                    <div class="promotion-piece" data-piece="queen">♕</div>
-                    <div class="promotion-piece" data-piece="rook">♖</div>
-                    <div class="promotion-piece" data-piece="bishop">♗</div>
-                    <div class="promotion-piece" data-piece="knight">♘</div>
+            <div class="side-section">
+                <h3 class="panel-heading">Moves</h3>
+                <div class="history-header">
+                    <span>#</span><span>White</span><span>Black</span>
+                </div>
+                <div class="history-scroll" id="history-list"></div>
+            </div>
+
+            <div class="side-section captures-section">
+                <h3 class="panel-heading">Captured</h3>
+                <div class="capture-row">
+                    <span class="capture-label">White</span>
+                    <div class="capture-pieces" id="captured-white-pieces"></div>
+                </div>
+                <div class="capture-row">
+                    <span class="capture-label">Black</span>
+                    <div class="capture-pieces" id="captured-black-pieces"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ===== PAWN PROMOTION MODAL ===== -->
+    <div id="promotion-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 class="modal-title">Promote Pawn</h3>
+            <div class="promotion-choices" id="promotion-choices"></div>
+        </div>
+    </div>
+
+    <!-- ===== GAME OVER MODAL ===== -->
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="gameover-icon" id="gameover-icon">♔</div>
+            <h2 class="gameover-title" id="gameover-title">White wins!</h2>
+            <p class="gameover-sub" id="gameover-sub">by checkmate</p>
+            <div class="gameover-actions">
+                <button id="btn-play-again" class="action-btn primary">Play Again</button>
+                <button id="btn-gameover-menu" class="action-btn">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.io client (loaded from server) -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="chess.js"></script>
 </body>
 </html>
-
