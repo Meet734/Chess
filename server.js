@@ -99,7 +99,4 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`\n♟  Chess server running at http://localhost:${PORT}`);
-    console.log(`   Share your local IP (e.g., http://192.168.x.x:${PORT}) for LAN play.\n`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
